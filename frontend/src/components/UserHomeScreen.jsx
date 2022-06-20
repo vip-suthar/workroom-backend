@@ -71,8 +71,23 @@ function UserHomeScreen() {
         }
     }
 
-    const handleDeleteState = (id)=>{
-
+    const handleDeleteState = async (id)=>{
+        if (cookies["user-token"] && typeof cookies["user-token"] != 'undefined') {
+            let response = await fetch(testApi + "/user/" + id, {
+                "method": "DELETE",
+                "headers": {
+                    "Authorization": cookies["user-token"]
+                }
+            });
+            if (response) {
+                let respData = await response.json();
+                if (respData.success !== false) {
+                    // setUsers(respData);
+                }
+            }
+        } else {
+            navigate("/sign-in");
+        }
     }
 
     const handleNameChange = async (id, e)=>{
